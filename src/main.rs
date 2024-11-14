@@ -1,38 +1,49 @@
-trait Area {
-    fn area(&self) -> f64;
+#[derive(Debug)]
+struct Counter {
+    length: usize,
+    count: usize,
 }
 
-struct Circle {
-    radius: f64,
-}
-
-struct Rectangle {
-    width: f64,
-    height: f64,
-}
-
-impl Area for Circle {
-    fn area(&self) -> f64 {
-        use std::f64::consts::PI;
-
-        PI * self.radius.powf(2.0)
+impl Counter {
+    fn new(length: usize) -> Counter {
+        Counter { length, count: 0 }
     }
 }
 
-impl Area for Rectangle {
-    fn area(&self) -> f64 {
-        self.width * self.height
+impl Iterator for Counter {
+    type Item = usize;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.count += 1;
+
+        if self.count <= self.length {
+            Some(self.count)
+        } else {
+            None
+        }
     }
 }
+
+// fn main() {
+//     let mut counter = Counter::new(6);
+
+//     println!("Counter just created: {:#?}", counter);
+
+//     assert_eq!(counter.next(), Some(1));
+//     assert_eq!(counter.next(), Some(2));
+//     assert_eq!(counter.next(), Some(3));
+//     assert_eq!(counter.next(), Some(4));
+//     assert_eq!(counter.next(), Some(5));
+//     assert_eq!(counter.next(), Some(6));
+//     assert_eq!(counter.next(), None);
+//     assert_eq!(counter.next(), None);
+//     assert_eq!(counter.next(), None);
+
+//     println!("Counter exhausted: {:#?}", counter);
+// }
 
 fn main() {
-    let circle = Circle { radius: 5.0 };
+    let sum_until_10: usize = Counter::new(10).sum();
 
-    let rectangle = Rectangle {
-        width: 10.0,
-        height: 20.0,
-    };
-
-    println!("Area of circle: {}", circle.area());
-    println!("Area of rectangle: {}", rectangle.area());
+    println!("sum : {}", sum_until_10)
 }
